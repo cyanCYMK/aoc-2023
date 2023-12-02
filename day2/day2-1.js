@@ -1,34 +1,5 @@
-const fs = require('fs'), path = require('path');
-
-// Gets input txt file as string
-function getFile(relativeFilePath) {
-	const filePath = path.join(__dirname, relativeFilePath);
-	const fileContents = fs.readFileSync(relativeFilePath, {encoding: 'utf8'}, (err, data) => {
-		if (err) {
-			console.error(err);
-			return;
-		};
-	})
-	return fileContents;
-}
-
-function parseInputIntoGames(input) {
-	return input.split('\n').map((gameInput) => {
-		const game = gameInput.replace(/Game [0-9]+: /, '').split(';')
-
-		return game.map(round => {
-			const red = Number(round.match(/([0-9]+) red/)?.[1]);
-			const green = Number(round.match(/([0-9]+) green/)?.[1]);
-			const blue = Number(round.match(/([0-9]+) blue/)?.[1]);
-
-			return {
-				red,
-				green,
-				blue,
-			};
-		}).filter(({red, green, blue}) => red || green || blue)
-	}).filter(game => game.length)
-}
+const { parseInputIntoGames } = require('./parse-input-into-games');
+const { getFile } = require('../utility/get-file');
 
 const AVAILABLE_CUBES = {
 	red: 12,
